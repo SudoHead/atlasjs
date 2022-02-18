@@ -1,7 +1,7 @@
 import {G} from "./constants.js"
 
 export class Body {
-    constructor(type, image, name, mass, p, v, f) {
+    constructor(type, image, name, mass, r, p, v, f) {
         this.type = type 
         this.image = image
         this.name = name
@@ -9,6 +9,7 @@ export class Body {
         this.v = v
         this.f = f
         this.mass = mass
+        this.r = r
     }
 
     add(b) {
