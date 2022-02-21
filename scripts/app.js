@@ -1,7 +1,7 @@
 import { Model } from "../model/Model.js";
 import { Body } from "../model/Body.js";
 import { SimClock } from "../model/SimClock.js";
-import { AU, SOLAR_MASS } from "../model/constants.js";
+import { AU, PLUTO_MASS, SOLAR_MASS } from "../model/constants.js";
 
 const width = window.innerWidth, height = window.innerHeight;
 
@@ -74,7 +74,20 @@ function update(model) {
 
 // TODO: inputs to control speed
 let dt = 20;
-setInterval(function() {
-    model.updateSim(dt * 86400 / 5);
-    update(model);
-}, dt)
+let btnPlay = document.getElementById("play"),
+    btnStop = document.getElementById("pause"),
+    loop,
+    running = false;
+
+function play () {
+    if (running) return;
+    running = true;
+    loop = setInterval(function() {
+        model.updateSim(dt * 86400 / 5);
+        update(model);
+    }, dt)
+}
+
+play()
+btnPlay.addEventListener("click", play)
+btnStop.addEventListener("click", () => { clearInterval(loop); running = false; })
