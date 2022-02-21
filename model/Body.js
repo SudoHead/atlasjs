@@ -1,4 +1,5 @@
 import {G} from "./constants.js"
+import { Quad } from "./Quad.js";
 
 export class Body {
     constructor(type, image, name, mass, r, p, v, f) {
@@ -13,10 +14,10 @@ export class Body {
     }
 
     add(b) {
-        let sumMass = this.mass + b.getMass();
+        let sumMass = this.mass + b.mass;
         let centerMassX = (this.p[0] * this.mass + b.p[0] * b.mass) / (sumMass);
         let centerMassY = (this.p[1] * this.mass + b.p[1] * b.mass) / (sumMass);
-        let combined = Body(this);
+        let combined = new Body(this.type, this.image, this.mass, this.r, this.p, [0, 0], [0, 0]);
         combined.mass = sumMass;
         combined.p[0] = centerMassX;
         combined.p[1] = centerMassY;
@@ -45,8 +46,8 @@ export class Body {
     }
 
     distanceTo(b) {
-        let dx = p[0] - b.p[0]
-        let dy = p[1] - b.p[1]
+        let dx = this.p[0] - b.p[0]
+        let dy = this.p[1] - b.p[1]
         return Math.sqrt(dx * dx + dy * dy)
     }
 
@@ -61,5 +62,9 @@ export class Body {
         let change = vt / this.getTotalVelocity()
         v[0] *= change
         v[1] *= change
+    }
+
+    in(quad) {
+        return quad.contains(this.p[0], this.p[1]);
     }
 }

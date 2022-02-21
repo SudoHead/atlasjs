@@ -2,10 +2,14 @@ import { Model } from "../model/Model.js";
 import { Body } from "../model/Body.js";
 import { SimClock } from "../model/SimClock.js";
 import { AU, PLUTO_MASS, SOLAR_MASS } from "../model/constants.js";
+import { BarnesHut } from "../model/BarnesHut.js";
 
 const width = window.innerWidth, height = window.innerHeight;
 
 let model = new Model()
+
+let barnesHut = new BarnesHut()
+model.setAlgorithm(barnesHut)
 
 // TODO: scale to zoom + mouse scroll event handler
 var scale = 1 / (AU/200)
@@ -83,7 +87,9 @@ function play () {
     if (running) return;
     running = true;
     loop = setInterval(function() {
+        console.time("updateSim()")
         model.updateSim(dt * 86400 / 5);
+        console.timeEnd("updateSim()")
         update(model);
     }, dt)
 }

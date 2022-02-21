@@ -8,8 +8,12 @@ export class Model {
         this.clock = new SimClock()
     }
 
+    setAlgorithm(algo) {
+        this.algorithm = algo;
+    }
+
     updateSim(seconds) {
-        if (this.algorithm == null) {
+        if (!this.algorithm) {
             let copy = this.bodies.slice()
             for (let b of this.bodies) {
                 b.resetForce()
@@ -21,7 +25,7 @@ export class Model {
                 b.updatePos(seconds)
             }
         } else {
-            this.bodies = this.algorithm.executeUpdate(bodies, seconds)
+            this.bodies = this.algorithm.executeUpdate(this.bodies, seconds)
         }
         this.clock.update(seconds)
     }
