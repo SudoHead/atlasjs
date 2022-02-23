@@ -14,7 +14,7 @@ let barnesHut = new BarnesHut()
 model.setAlgorithm(barnesHut)
 
 // TODO: scale to zoom + mouse scroll event handler
-var scale = 1 / (AU/100)
+var scale = 1 / (AU/30)
 
 const solar_system_data = await fetch('../data.json')
 .then(response => response.json())
@@ -59,7 +59,7 @@ function toScreenXY(p) {
 }
 
 function scaleRadius(b) {
-    return Math.max(30 * (b.mass/SOLAR_MASS), 4);
+    return Math.max(10 * (b.mass/SOLAR_MASS), 2);
 }
 
 function click() {
