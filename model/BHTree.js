@@ -12,92 +12,63 @@ export class BHTree {
         this.NE = null;
         this.SW = null;
         this.SE = null;
+        this.n = 0;
+        this.level = 0;
+        this.rec_limit = 1000;
     }
 
     //If all nodes of the BHTree are null, then the quadrant represents a single body and it is "external"
     isExternal(tree) {
-        return (tree.NW == null && tree.NE == null && tree.SW == null && tree.SE == null);
+        return (tree.NW === null && tree.NE === null && tree.SW === null && tree.SE === null);
+    }
+
+    _insert(b) {
+        let nw = this.quad.NW();
+        let ne = this.quad.NE();
+        let se = this.quad.SE();
+        let sw = this.quad.SW();
+        if (b.in(nw)) {
+            // console.log("body: " + b.p[0] + b.p[1] + " in NW: " + nw + " n: " + this.n + " lvl: " + (this.level + 1))
+            if (!this.NW) this.NW = new BHTree(nw);
+            this.NW.level = this.level + 1;
+            if (this.NW.level > this.rec_limit) this.NW.body = b.add(this.NW.body);
+            else this.NW.insert(b);
+        }
+        else if (b.in(ne)) {
+            // console.log("body: " + b.p[0] + b.p[1] + " in NE: " + ne + " n: " + this.n + " lvl: " + (this.level + 1))
+            if (!this.NE) this.NE = new BHTree(ne);
+            this.NE.level = this.level + 1;
+            if (this.NE.level > this.rec_limit) this.NE.body = b.add(this.NE.body);
+            else this.NE.insert(b);
+        }
+        else if (b.in(se)) {
+            // console.log("body: " + b.p[0] + b.p[1] + " in SE: " + se + " n: " + this.n + " lvl: " + (this.level + 1))
+            if (!this.SE) this.SE = new BHTree(se);
+            this.SE.level = this.level + 1;
+            if (this.SE.level > this.rec_limit) this.SE.body = b.add(this.SE.body);
+            else this.SE.insert(b);
+        }
+        else if (b.in(sw)) {
+            // console.log("body: " + b.p[0] + b.p[1] + " in SW: " + sw + " n: " + this.n + " lvl: " + (this.level + 1))
+            if (!this.SW) this.SW = new BHTree(sw);
+            if (this.SW.level > this.rec_limit) this.SW.body = b.add(this.SW.body);
+            else this.SW.insert(b);
+        }
     }
 
     //We have to populate the tree with bodies. We start at the current tree and recursively travel through the branches
     insert(b) {
-        //If there's not a body there already, put the body there.
-        if (this.body == null) {
+        if (this.body === null){
             this.body = b;
-            return;
         }
-        //If the node is external and contains another body, create BHTrees
-        //where the bodies should go, update the node, and end
-        //(do not do anything recursively)
-        if (this.isExternal(this)) {
-            let c = this.body;
-            let northwest = this.quad.NW();
-            if (c.in(northwest)) {
-                if (this.NW == null) {
-                    this.NW = new BHTree(northwest);
-                }
-                this.NW.insert(c);
-            } else {
-                let northeast = this.quad.NE();
-                if (c.in(northeast)) {
-                    if (this.NE == null) {
-                        this.NE = new BHTree(northeast);
-                    }
-                    this.NE.insert(c);
-                } else {
-                    let southeast = this.quad.SE();
-                    if (c.in(southeast)) {
-                        if (this.SE == null) {
-                            this.SE = new BHTree(southeast);
-                        }
-                        this.SE.insert(c);
-                    } else {
-                        let southwest = this.quad.SW();
-                        if (this.SW == null) {
-                            this.SW = new BHTree(southwest);
-                        }
-                        this.SW.insert(c);
-                    }
-                }
-            }
+        else if (!this.isExternal(this)) {
+            this.body = b.add(this.body);
+            this._insert(b);
+        } else if (this.isExternal(this)) {
+            this._insert(this.body);
             this.insert(b);
         }
-        //If there's already a body there, but it's not an external node
-        //combine the two bodies and figure out which quadrant of the
-        //tree it should be located in. Then recursively update the nodes below it.
-        else {
-            this.body = b.add(this.body);
-
-            let northwest = this.quad.NW();
-            if (b.in(northwest)) {
-                if (this.NW == null) {
-                    this.NW = new BHTree(northwest);
-                }
-                this.NW.insert(b);
-            } else {
-                let northeast = this.quad.NE();
-                if (b.in(northeast)) {
-                    if (this.NE == null) {
-                        this.NE = new BHTree(northeast);
-                    }
-                    this.NE.insert(b);
-                } else {
-                    let southeast = this.quad.SE();
-                    if (b.in(southeast)) {
-                        if (this.SE == null) {
-                            this.SE = new BHTree(southeast);
-                        }
-                        this.SE.insert(b);
-                    } else {
-                        let southwest = this.quad.SW();
-                        if (this.SW == null) {
-                            this.SW = new BHTree(southwest);
-                        }
-                        this.SW.insert(b);
-                    }
-                }
-            }
-        }
+        this.n += 1;
     }
 
     //Start at the main node of the tree. Then, recursively go each branch
@@ -106,7 +77,7 @@ export class BHTree {
     updateForce(b) {
         if (this.isExternal(this)) {
             if (this.body != b) b.addForce(this.body);
-        } else if (this.quad.length / (this.body.distanceTo(b)) < 2) {
+        } else if (this.quad.length / (this.body.distanceTo(b)) < 2 || this.level > 2000) {
             b.addForce(this.body);
         } else {
             if (this.NW != null) this.NW.updateForce(b);
@@ -114,6 +85,16 @@ export class BHTree {
             if (this.SE != null) this.SE.updateForce(b);
             if (this.NE != null) this.NE.updateForce(b);
         }
+    }
+
+    nodeList() {
+        if (!this.quad) return [];
+        let quads = [this];
+        if (this.NW) quads = quads.concat(this.NW.nodeList());
+        if (this.SW) quads = quads.concat(this.SW.nodeList());
+        if (this.SE) quads = quads.concat(this.SE.nodeList());
+        if (this.NE) quads = quads.concat(this.NE.nodeList());
+        return quads;
     }
 
     // convert to string representation for output

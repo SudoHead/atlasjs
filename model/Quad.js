@@ -35,4 +35,8 @@ export class Quad {
     SE() {
         return new Quad(this.xmid + this.length / 4.0, this.ymid - this.length / 4.0, this.length / 2.0);
     }
+
+    toString() {
+        return `leftCorner: ${this.xmid - this.length / 2}, ${this.ymid - this.length / 2} | rightCorner: ${this.xmid + this.length / 2}, ${this.ymid + this.length / 2}`;
+    }
 }

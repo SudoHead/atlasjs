@@ -14,14 +14,11 @@ export class Body {
     }
 
     add(b) {
+        if (!b) return this;
         let sumMass = this.mass + b.mass;
         let centerMassX = (this.p[0] * this.mass + b.p[0] * b.mass) / (sumMass);
         let centerMassY = (this.p[1] * this.mass + b.p[1] * b.mass) / (sumMass);
-        let combined = new Body(this.type, this.image, this.mass, this.r, this.p, [0, 0], [0, 0]);
-        combined.mass = sumMass;
-        combined.p[0] = centerMassX;
-        combined.p[1] = centerMassY;
-        return combined
+        return new Body(this.type, this.image, "combined", sumMass, this.r, [centerMassX, centerMassY], [0, 0], [0, 0]);
     }
 
     addForce(b) {
