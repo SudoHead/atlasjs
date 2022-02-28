@@ -64,4 +64,8 @@ export class Body {
     in(quad) {
         return quad.contains(this.p[0], this.p[1]);
     }
+
+    toString() {
+        return this.name + " p = " + this.p;
+    }
 }

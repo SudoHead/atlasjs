@@ -41,9 +41,6 @@ bodies.forEach(b => {
     model.addBody(new Body('', '', b.name, mass, b.r, [dist, dist], [0, 0], [0, 0]));
 });
 
-console.warn(model.bodies)
-
-console.log(model)
 
 let vis = d3.select("div")
     .append("svg:svg")
@@ -69,7 +66,7 @@ function click() {
         Math.round( (coords[0] - width/2) / scale),
         Math.round( (coords[1] - height/2) / scale)
     ]
-    
+
     model.addBody(new Body('', '', 'body' + Math.round(performance.now()), 
     EARTH_MASS, sun.r/100, newData, [0,0], [0,0]));
 }
@@ -115,7 +112,7 @@ function continuosClick() {
 vis.on("mousedown", () => { keepAdding = true })
     .on("mouseup", () => { keepAdding = false })
     .on("mousemove", continuosClick)
-    // .on("click", click)
+    .on("click", click)
 
 function update(model) {
     let select = vis.selectAll("circle")
