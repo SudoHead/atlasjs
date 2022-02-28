@@ -147,7 +147,7 @@ function drawTree(quads) {
         .attr("y",     (q) => { return (q.ymid - q.length/2) * scale + height / 2; })
         .attr("width", (q) => { return q.length * scale; })
         .attr("height", (q) => { return q.length * scale; })
-        .style("stroke-opacity", 0.8) 
+        .style("stroke-opacity", 0.2) 
         .style("stroke", "green")
         .style("fill", "none")
         // .attr("opacity", 0.9)
@@ -162,7 +162,12 @@ function drawTree(quads) {
 }
 
 function drawQuadTree(model) {
-    let q = new Quad(0, 0, AU * 10);
+    if (!document.getElementById("showtree").checked) {
+        vis.selectAll("rect").remove()
+        return;
+    }
+
+    let q = new Quad(0, 0, AU * 1000);
     let tree = new BHTree(q);
     // If the body is still on the screen, add it to the tree
     let n = 0;
@@ -201,7 +206,7 @@ function playStop () {
         let body = document.getElementById("n-body");
         body.innerText = model.bodies.length + "-body simulation";
         update(model);
-        // drawQuadTree(model);
+        drawQuadTree(model);
     }, dt)
 }
 

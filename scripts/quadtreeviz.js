@@ -50,6 +50,7 @@ vis.on("click", function() {
         tree.insert(b);
     }
     drawQuads(tree.nodeList().map((b) => b.quad));
+    drawQuadsCenter(tree.nodeList().map((b) => b.quad));
 
     vis.selectAll("circle")  // For new circle, go through the update process
         .data(bodies)
@@ -111,6 +112,25 @@ function drawQuads(quads) {
     select
         .attr("x",     (q) => { return (q.xmid - q.length/2) * scale; })
         .attr("y",     (q) => { return (q.ymid - q.length/2) * scale; })
+
+    select.exit()
+        .remove();
+}
+
+var triangle = d3.symbol()
+                    .type(d3.symbolTriangle)
+                    .size(25)
+
+function drawQuadsCenter(quads) {
+    let select = vis.selectAll("path")
+        .data(quads)
+
+    select.enter()
+        .append("path")
+        .attr("d", triangle)
+        .attr("stroke", "white")
+        .attr("color", "white")
+        .attr("transform", function(q) { return "translate(" + q.xmid + "," + q.ymid + ")"; });
 
     select.exit()
         .remove();
