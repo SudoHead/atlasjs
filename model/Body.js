@@ -1,5 +1,5 @@
-import {AU, G} from "https://cdn.jsdelivr.net/gh/sudohead/atlasjs/constants.js"
-import { Quad } from "https://cdn.jsdelivr.net/gh/sudohead/atlasjs/Quad.js";
+import {AU, G} from "./constants.js"
+import { Quad } from "./Quad.js";
 
 export class Body {
     constructor(type, image, name, mass, r, p, v, f) {
