@@ -11,7 +11,7 @@ export class BarnesHut {
     }
 
     executeUpdate(bodies, sec) {
-        let q = new Quad(0, 0, 2 * 1e18);
+        let q = new Quad(0, 0, 2 * 1e15);
         this.bhtree = new BHTree(q);
         // If the body is still on the screen, add it to the tree
         for (let b of bodies) {

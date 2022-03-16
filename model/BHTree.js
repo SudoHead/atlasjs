@@ -1,6 +1,3 @@
-import { Quad } from "./Quad.js";
-import { Body } from "./Body.js";
-
 export class BHTree {
     
     //Create and initialize a new bhtree. Initially, all nodes are null and will be filled by recursion

@@ -1,10 +1,10 @@
-import { Model } from "../model/Model.js";
-import { Body } from "../model/Body.js";
+import { Model } from "https://cdn.jsdelivr.net/gh/sudohead/atlasjs/model/Model.js";
+import { Body } from "https://cdn.jsdelivr.net/gh/sudohead/atlasjs/model/Body.js";
 import { SimClock } from "../model/SimClock.js";
-import { AU, EARTH_MASS, PLUTO_MASS, SOLAR_MASS } from "../model/constants.js";
-import { BarnesHut } from "../model/BarnesHut.js";
-import { Quad } from "../model/Quad.js";
-import { BHTree } from "../model/BHTree.js";
+import { AU, EARTH_MASS, PLUTO_MASS, SOLAR_MASS } from "https://cdn.jsdelivr.net/gh/sudohead/atlasjs/model/constants.js";
+import { BarnesHut } from "https://cdn.jsdelivr.net/gh/sudohead/atlasjs/model/BarnesHut.js";
+import { Quad } from "https://cdn.jsdelivr.net/gh/sudohead/atlasjs/model/Quad.js";
+import { BHTree } from "https://cdn.jsdelivr.net/gh/sudohead/atlasjs/model/BHTree.js";
 
 const width = window.innerWidth, height = window.innerHeight;
 
@@ -14,33 +14,34 @@ let barnesHut = new BarnesHut()
 model.setAlgorithm(barnesHut)
 
 // TODO: scale to zoom + mouse scroll event handler
-var scale = 1 / (AU/30)
+var scale = 1 / (AU * 10)
 
-const solar_system_data = await fetch('../data.json')
+const solar_system_data = await fetch('https://cdn.jsdelivr.net/gh/sudohead/atlasjs/data.json')
 .then(response => response.json())
 .catch(error => console.log(error));
 
 let sun = solar_system_data[0]
 
-let bodies = []
+// let bodies = []
 
-const extract_bodies = (b) => {
-    bodies.push(b);
-    if (b.satellites) {
-        b.satellites.forEach(element => {
-            extract_bodies(element)
-        });
-    }
-};
+// const extract_bodies = (b) => {
+//     bodies.push(b);
+//     if (b.satellites) {
+//         b.satellites.forEach(element => {
+//             extract_bodies(element)
+//         });
+//     }
+// };
 
-extract_bodies(sun)
+// extract_bodies(sun)
 
-bodies.forEach(b => {
-    let dist = b.distance * AU,
-        mass = b.mass * SOLAR_MASS;
-    model.addBody(new Body('', '', b.name, mass, b.r, [dist, dist], [0, 0], [0, 0]));
-});
-
+// bodies.forEach(b => {
+//     let dist = b.distance * AU,
+//         mass = b.mass * SOLAR_MASS;
+//     model.addBody(new Body('', '', b.name, mass, b.r, [dist, dist], [0, 0], [0, 0]));
+// });
+model.spawnSpiralGalaxy(-4000 * AU, 0, AU * 4000, 2048, 4);
+model.spawnSpiralGalaxy(4000 * AU, 4000 * AU, AU * 4000, 2048, 5, [-AU/10000, -AU/10000]);
 
 let vis = d3.select("div")
     .append("svg:svg")
@@ -56,7 +57,7 @@ function toScreenXY(p) {
 }
 
 function scaleRadius(b) {
-    return Math.max(10 * (b.mass/SOLAR_MASS), 2);
+    return Math.min(Math.max(10 * (b.mass/SOLAR_MASS), 2), 30);
 }
 
 function click() {
@@ -199,7 +200,7 @@ function playStop () {
     running = true;
     loop = setInterval(function() {
         let _start = performance.now();
-        model.updateSim(dt * 86400 / 5);
+        model.updateSim(dt * 86400 / 50);
         let t = 1000 / (performance.now() - _start);
         let runtimeInfo = document.getElementById("runtime");
         runtimeInfo.innerText = "Max iterations/s: " + Math.round(t);

@@ -1,5 +1,5 @@
-import {G} from "./constants.js"
-import { Quad } from "./Quad.js";
+import {AU, G} from "https://cdn.jsdelivr.net/gh/sudohead/atlasjs/constants.js"
+import { Quad } from "https://cdn.jsdelivr.net/gh/sudohead/atlasjs/Quad.js";
 
 export class Body {
     constructor(type, image, name, mass, r, p, v, f) {
@@ -66,6 +66,7 @@ export class Body {
     }
 
     toString() {
-        return this.name + " p = " + this.p;
+        return this.name + " pos (AU) = " + Math.round(this.p[0] / AU, 2) + 
+            ", " + Math.round(this.p[1] / AU, 2);
     }
 }
