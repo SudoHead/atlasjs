@@ -40,8 +40,8 @@ let sun = solar_system_data[0]
 //         mass = b.mass * SOLAR_MASS;
 //     model.addBody(new Body('', '', b.name, mass, b.r, [dist, dist], [0, 0], [0, 0]));
 // });
-model.spawnSpiralGalaxy(-4000 * AU, 0, AU * 4000, 2048, 4);
-model.spawnSpiralGalaxy(4000 * AU, 4000 * AU, AU * 4000, 2048, 5, [-AU/10000, -AU/10000]);
+model.spawnSpiralGalaxy(-4000 * AU, 0, AU * 4000, 2047, 4);
+model.spawnSpiralGalaxy(4000 * AU, 4000 * AU, AU * 4000, 2047, 5, [-AU/10000, -AU/10000]);
 
 let vis = d3.select("div")
     .append("svg:svg")
@@ -168,7 +168,7 @@ function drawQuadTree(model) {
         return;
     }
 
-    let q = new Quad(0, 0, AU * 1000);
+    let q = new Quad(0, 0, AU * 100000);
     let tree = new BHTree(q);
     // If the body is still on the screen, add it to the tree
     let n = 0;
@@ -184,7 +184,7 @@ function drawQuadTree(model) {
 }
 
 // TODO: inputs to control speed
-let dt = 20;
+let dt = 33.333;
 let btnPlay = document.getElementById("play"),
     loop,
     running = false;
