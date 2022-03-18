@@ -2,11 +2,12 @@ import { Model } from "../model/Model.js";
 import { Body } from "../model/Body.js";
 import { SimClock } from "../model/SimClock.js";
 import { AU, EARTH_MASS, PLUTO_MASS, SOLAR_MASS } from "../model/constants.js";
+import { getWidth, getHeight } from "./global.js";
 import { BarnesHut } from "../model/BarnesHut.js";
 import { Quad } from "../model/Quad.js";
 import { BHTree } from "../model/BHTree.js";
 
-const width = window.innerWidth, height = window.innerHeight;
+const width = getWidth(), height = getHeight();
 
 let model = new Model()
 
@@ -43,7 +44,7 @@ let sun = solar_system_data[0]
 model.spawnSpiralGalaxy(-4000 * AU, 0, AU * 4000, 2047, 4);
 model.spawnSpiralGalaxy(4000 * AU, 4000 * AU, AU * 4000, 2047, 5, [-AU/10000, -AU/10000]);
 
-let vis = d3.select("div")
+let vis = d3.select("div#sim-area")
     .append("svg:svg")
     .attr("width", width)
     .attr("height", height);

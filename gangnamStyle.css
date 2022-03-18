@@ -4,6 +4,10 @@ body {
     margin: 0;
 }
 
+div#control-area p {
+    margin: 0;
+}
+
 #scaffold, #controls {
     position: absolute;
     top: 0;

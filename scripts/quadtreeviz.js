@@ -1,8 +1,9 @@
 import { Quad } from "../model/Quad.js";
 import { BHTree } from "../model/BHTree.js"; 
 import { Body } from "../model/Body.js";
+import { getWidth, getHeight } from "./global.js";
 
-const width = window.innerWidth, height = window.innerHeight;
+const width = getWidth(), height = getHeight();
 
 let scale = 1;
 const radius = 6;
