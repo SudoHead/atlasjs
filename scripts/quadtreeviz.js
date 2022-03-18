@@ -10,7 +10,7 @@ const radius = 6;
 
 let bodies = [];
 
-let vis = d3.select("div")
+let vis = d3.select("#sim-area")
     .append("svg:svg")
     .attr("width", width * 2)
     .attr("height", height);

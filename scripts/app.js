@@ -44,7 +44,7 @@ let sun = solar_system_data[0]
 model.spawnSpiralGalaxy(-4000 * AU, 0, AU * 4000, 2047, 4);
 model.spawnSpiralGalaxy(4000 * AU, 4000 * AU, AU * 4000, 2047, 5, [-AU/10000, -AU/10000]);
 
-let vis = d3.select("div#sim-area")
+let vis = d3.select("#sim-area")
     .append("svg:svg")
     .attr("width", width)
     .attr("height", height);
