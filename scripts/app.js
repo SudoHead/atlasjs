@@ -190,27 +190,32 @@ let btnPlay = document.getElementById("play"),
     loop,
     running = false;
 
+function step () {
+    if (!running) return;
+
+    let _start = performance.now();
+    model.updateSim(dt * 86400 / 50);
+    let t = 1000 / (performance.now() - _start);
+    let runtimeInfo = document.getElementById("runtime");
+    runtimeInfo.innerText = "Max iterations/s: " + Math.round(t);
+    let body = document.getElementById("n-body");
+    body.innerText = model.bodies.length + "-body simulation";
+    update(model);
+    drawQuadTree(model);
+    window.requestAnimationFrame(step)
+}
+
+window.requestAnimationFrame(step)
 function playStop () {
     if (running) {
-        clearInterval(loop);
         running = false;
         btnPlay.innerText = "Play";
         return;
     }
     btnPlay.innerText = "Stop"
     running = true;
-    loop = setInterval(function() {
-        let _start = performance.now();
-        model.updateSim(dt * 86400 / 50);
-        let t = 1000 / (performance.now() - _start);
-        let runtimeInfo = document.getElementById("runtime");
-        runtimeInfo.innerText = "Max iterations/s: " + Math.round(t);
-        let body = document.getElementById("n-body");
-        body.innerText = model.bodies.length + "-body simulation";
-        update(model);
-        drawQuadTree(model);
-    }, dt)
+    window.requestAnimationFrame(step)
 }
 
-playStop()
+// playStop()
 btnPlay.addEventListener("click", playStop)
