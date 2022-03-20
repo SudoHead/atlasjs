@@ -81,8 +81,8 @@ export class Model {
             theta += (Math.PI * 2) / (n / coils);
         
             // Convert 'around' and 'away' to X and Y.
-            var px = x + Math.cos(theta) * radius + Math.random() * (r / n) * 300;
-            var py = y + Math.sin(theta) * radius + Math.random() * (r / n) * 200;
+            var px = x + Math.cos(theta) * radius + Math.random() * (r / n) * 200;
+            var py = y + Math.sin(theta) * radius + Math.random() * (r / n) * 150;
             
             this.addBody(new Body('star', '', 'star_' + i, SOLAR_MASS / 100, 1, [px, py], [0, 0], [0, 0]))
         }

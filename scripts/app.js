@@ -41,8 +41,8 @@ let sun = solar_system_data[0]
 //         mass = b.mass * SOLAR_MASS;
 //     model.addBody(new Body('', '', b.name, mass, b.r, [dist, dist], [0, 0], [0, 0]));
 // });
-model.spawnSpiralGalaxy(-4000 * AU, 0, AU * 4000, 2047, 4);
-model.spawnSpiralGalaxy(4000 * AU, 4000 * AU, AU * 4000, 2047, 5, [-AU/10000, -AU/10000]);
+model.spawnSpiralGalaxy(-4000 * AU, 0, AU * 4000, 1023, 4);
+model.spawnSpiralGalaxy(4000 * AU, 4000 * AU, AU * 4000, 1023, 5, [-AU/10000, -AU/10000]);
 
 let vis = d3.select("#sim-area")
     .append("svg:svg")
@@ -188,13 +188,13 @@ function drawQuadTree(model) {
 let dt = 33.333;
 let btnPlay = document.getElementById("play"),
     loop,
-    running = false;
+    running = true;
 
 function step () {
     if (!running) return;
 
     let _start = performance.now();
-    model.updateSim(dt * 86400 / 50);
+    model.updateSim(dt * 86400 / 100);
     let t = 1000 / (performance.now() - _start);
     let runtimeInfo = document.getElementById("runtime");
     runtimeInfo.innerText = "Max iterations/s: " + Math.round(t);
